@@ -80,6 +80,15 @@ export const asyncRoutes = [
     meta: { title: '组件', icon: 'box-open' },
     children: [
       {
+        path: 'repeatTable',
+        name: 'repeatTable',
+        component: () => import('@/views/vab/table/repeatTable'),
+        meta: {
+          title: '表格表单上下重复',
+          permissions: ['admin', 'editor'],
+        },
+      },
+      {
         path: 'permissions',
         name: 'Permission',
         component: () => import('@/views/vab/permissions/index'),
