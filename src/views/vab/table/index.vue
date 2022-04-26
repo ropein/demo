@@ -12,6 +12,7 @@
         <el-button type="primary" @click="testALert">baseAlert</el-button>
         <el-button type="primary" @click="testConfirm">baseConfirm</el-button>
         <el-button type="primary" @click="testNotify">baseNotify</el-button>
+        <el-button type="primary" @click="exportAll">导出</el-button>
       </vab-query-form-left-panel>
       <vab-query-form-right-panel>
         <el-form
@@ -124,6 +125,8 @@
 <script>
   import { getList, doDelete } from '@/api/table'
   import TableEdit from './components/TableEdit'
+  import { json2excel } from '@/utils'
+  import table2excel from 'js-table2excel'
   export default {
     name: 'ComprehensiveTable',
     components: {
@@ -168,6 +171,41 @@
     beforeDestroy() {},
     mounted() {},
     methods: {
+      exportAll() {
+        // 这个方法无法导出图片，但是可以导出多个sheet
+        let excelDatas = [
+          {
+            tHeader: ['标题', '头像'],
+            filterVal: ['title', 'img'],
+            tableDatas: this.list,
+            sheetName: '统计',
+          },
+        ]
+        json2excel(excelDatas, 'IP资源列表', 'xlsx')
+        // 这个方法可以导出图片
+        /** column数据的说明 */
+        //1.title为column的标题
+        //2.key为column对应的key
+        //3.type默认是text，若为图片格式type为image , 并且可以设置图片的宽高
+        // const column = [
+        //   {
+        //     title: '标题',
+        //     key: 'title',
+        //     type: 'text',
+        //   },
+        //   {
+        //     title: '头像',
+        //     key: 'img',
+        //     type: 'image',
+        //     width: 279,
+        //     height: 107,
+        //   },
+        // ]
+
+        //this.newsList是从后端接口中获取数组列表
+        //第三个参数是表格名
+        // table2excel(column, this.list, '时报新闻列表.xls')
+      },
       tableSortChange() {
         const imageList = []
         this.$refs.tableSort.tableData.forEach((item, index) => {

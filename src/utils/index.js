@@ -1,3 +1,4 @@
+import * as excel from './Export2Excel'
 /**
  * @author https://gitee.com/chu1204505056/vue-admin-better （不想保留author可删除）
  * @description 格式化时间
@@ -264,3 +265,27 @@ export const off = (function () {
     }
   }
 })()
+
+// 将json数据转换为excel
+export function json2excel(tableJson, filenames, bookTypes) {
+  let tHeader = []
+  let dataArr = []
+  let sheetnames = []
+  for (let data of tableJson) {
+    let map = null
+    if (data.tableDatas) {
+      map = data.tableDatas.map((v) => data.filterVal.map((j) => v[j]))
+    }
+    tHeader.push(data.tHeader)
+    dataArr.push(map)
+    sheetnames.push(data.sheetName)
+  }
+  let params = {
+    header: tHeader,
+    data: dataArr,
+    sheetname: sheetnames,
+    filename: filenames,
+    bookType: bookTypes,
+  }
+  excel.export_json_to_sheets(params)
+}
